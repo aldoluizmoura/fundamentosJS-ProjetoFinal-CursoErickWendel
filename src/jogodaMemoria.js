@@ -12,13 +12,16 @@ class JogoDaMemoria {
 
         this.iconePadrao = './arquivos/padrao.png'
         this.heroisEscondidos = []
+        this.heroisSelecionados = []
 
     }
 
     inicializar() {
         this.tela.atualizarImagens(this.heroisIniciais)
         this.tela.configurarBotaoJogar(this.jogar.bind(this))
+        this.tela.configurarClickVerificarSelecao(this.verificarSelecao.bind(this))
     }
+
     embaralhar(){
         const copias = this.heroisIniciais
         .concat(this.heroisIniciais)
@@ -34,6 +37,26 @@ class JogoDaMemoria {
         }, 1500);
     }
 
+    verificarSelecao(id, nome){
+        const item = {id, nome }
+        const heroisSelecionados = this.heroisSelecionados.length
+        switch(heroisSelecionados){
+            case 0:
+                this.heroisSelecionados.push(item)
+                break;
+            case 1:
+                const [ opcao1 ] = this.heroisSelecionados
+                this.heroisSelecionados = []  
+                if(opcao1.nome === item.nome && opcao1.id !== item.id){
+                    alert('combinação correta', + item.nome)
+                    return;
+                }  
+                alert('combinação incorreta!')            
+                break;
+            }
+     
+    }
+
     esconderHerois(herois){
         const heroisOcultos = herois.map(( {nome, id}) => ({
             id, nome, img: this.iconePadrao
@@ -42,9 +65,13 @@ class JogoDaMemoria {
         this.heroisOcultos = heroisOcultos
     }
 
+   
+
     jogar(){
        this.embaralhar()
     }
+
+   
 
 
 }
