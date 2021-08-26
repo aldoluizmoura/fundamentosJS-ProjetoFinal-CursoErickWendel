@@ -10,6 +10,9 @@ class JogoDaMemoria {
             { img: './arquivos/homemaranha.png', nome: 'homemaranha' }
         ]
 
+        this.iconePadrao = './arquivos/padrao.png'
+        this.heroisEscondidos = []
+
     }
 
     inicializar() {
@@ -25,6 +28,18 @@ class JogoDaMemoria {
         .sort(() => Math.random() - 0.5)
 
         this.tela.atualizarImagens(copias)
+
+        setTimeout(() => {
+            this.esconderHerois(copias)
+        }, 1500);
+    }
+
+    esconderHerois(herois){
+        const heroisOcultos = herois.map(( {nome, id}) => ({
+            id, nome, img: this.iconePadrao
+        }))
+        this.tela.atualizarImagens(heroisOcultos)
+        this.heroisOcultos = heroisOcultos
     }
 
     jogar(){
