@@ -1,6 +1,7 @@
 function OnLoad() {
     const dependencias = {
-        tela: Tela
+        tela: Tela,
+        util: Util
     }
 
     const jogoDaMemoria = new JogoDaMemoria(dependencias)

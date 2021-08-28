@@ -1,7 +1,8 @@
 class JogoDaMemoria {
 
-    constructor({ tela }) {
-        this.tela = tela
+    constructor({ tela, util }) {
+        this.tela = tela,
+        this.util = util
 
         this.heroisIniciais = [
             { img: './arquivos/batman.png', nome: 'batman' },
@@ -22,7 +23,7 @@ class JogoDaMemoria {
         this.tela.configurarClickVerificarSelecao(this.verificarSelecao.bind(this))
     }
 
-    embaralhar(){
+    async embaralhar(){
         const copias = this.heroisIniciais
         .concat(this.heroisIniciais)
         .map(item => {
@@ -31,10 +32,13 @@ class JogoDaMemoria {
         .sort(() => Math.random() - 0.5)
 
         this.tela.atualizarImagens(copias)
+        this.tela.exibirCarregando()
+        await this.util.timeout(1000)
+        this.esconderHerois(copias)
+        this.tela.exibirCarregando(false)
 
-        setTimeout(() => {
-            this.esconderHerois(copias)
-        }, 1500);
+        
+
     }
 
     verificarSelecao(id, nome){
