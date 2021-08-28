@@ -48,10 +48,12 @@ class JogoDaMemoria {
                 const [ opcao1 ] = this.heroisSelecionados
                 this.heroisSelecionados = []  
                 if(opcao1.nome === item.nome && opcao1.id !== item.id){
-                    alert('combinação correta', + item.nome)
+                    this.exbirHerois(item.nome)
+                    this.tela.ExibirMensagem()
+                   // alert('combinação correta', + item.nome)
                     return;
                 }  
-                alert('combinação incorreta!')            
+                this.tela.ExibirMensagem(false)
                 break;
             }
      
@@ -65,7 +67,11 @@ class JogoDaMemoria {
         this.heroisOcultos = heroisOcultos
     }
 
-   
+    exbirHerois(nomeDoHeroi){
+
+        const { img } = this.heroisIniciais.find(({ nome }) => nomeDoHeroi === nome)
+        this.tela.exbirHerois(nomeDoHeroi, img)
+    }   
 
     jogar(){
        this.embaralhar()
