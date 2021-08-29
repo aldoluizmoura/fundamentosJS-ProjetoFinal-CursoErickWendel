@@ -5,6 +5,7 @@ const ID_MENSAGEM = "mensagem"
 const CLASSE_INVISIVEL = "invisible"
 const ID_CARREGANDO = "carregando"
 const ID_CONTADOR = "contador"
+const ID_BTN_MOSTRAR_TUDO = "MostrarTudo"
 const MENSAGENS = {
     sucesso: {
         texto: 'combinação correta!',
@@ -56,9 +57,10 @@ class Tela {
         const elementosHtml = document.getElementsByName(nomeDoHeroi)
         elementosHtml.forEach(item=> (item.src = img))
     }
-    static async exibirMensagem(sucesso = true){
+    static async ExibirMensagem(sucesso = true){
+
         const elemento = document.getElementById(ID_MENSAGEM)
-        if(sucesso){
+        if(sucesso) {
             elemento.classList.remove(MENSAGENS.erro.classe)
             elemento.classList.add(MENSAGENS.sucesso.classe)
             elemento.innerText = MENSAGENS.sucesso.texto
@@ -68,8 +70,10 @@ class Tela {
             elemento.classList.add(MENSAGENS.erro.classe)
             elemento.innerText = MENSAGENS.erro.texto
         }
+
         elemento.classList.remove(CLASSE_INVISIVEL)
         await util.timeout(1000)
+        // this.LimparContador(idDoIntervalo)
         elemento.classList.add(CLASSE_INVISIVEL)
     }
 
@@ -82,7 +86,28 @@ class Tela {
         carregando.classList.add(CLASSE_INVISIVEL)
     }
     
+    static iniciarContador(){
+        let contarAte = 3
+        const elementoContador = document.getElementById(ID_CONTADOR)
+        const identificadorNoTexto = "$$contador"
+        const textoPadrao = `Começando em ${identificadorNoTexto} segundos...`
+        const atualizarTexto = () => 
+        (elementoContador.innerHTML = textoPadrao.replace(identificadorNoTexto, contarAte--))
 
+        atualizarTexto()
+        const idDoIntervalo = setInterval(atualizarTexto, 1000)
+        return idDoIntervalo;
+    }
+
+    static LimparContador(idDoIntervalo){
+        clearInterval(idDoIntervalo)
+        document.getElementById(ID_CONTADOR).innerHTML = ""
+    }
+
+    static configurarBotaoMostrarTudo(funcaoOnClick){
+        const btnMostrarTudo = document.getElementById(ID_BTN_MOSTRAR_TUDO)
+        btnMostrarTudo.onclick = funcaoOnClick
+    }
 
 
 }

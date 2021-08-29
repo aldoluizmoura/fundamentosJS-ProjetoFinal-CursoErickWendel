@@ -21,6 +21,8 @@ class JogoDaMemoria {
         this.tela.atualizarImagens(this.heroisIniciais)
         this.tela.configurarBotaoJogar(this.jogar.bind(this))
         this.tela.configurarClickVerificarSelecao(this.verificarSelecao.bind(this))
+        this.tela.configurarBotaoMostrarTudo(this.mostrarHeroisEscondidos.bind(this))
+
     }
 
     async embaralhar(){
@@ -33,11 +35,10 @@ class JogoDaMemoria {
 
         this.tela.atualizarImagens(copias)
         this.tela.exibirCarregando()
-        await this.util.timeout(1000)
+        const idDoIntervalo = this.tela.iniciarContador()
+        await this.util.timeout(3000)
         this.esconderHerois(copias)
         this.tela.exibirCarregando(false)
-
-        
 
     }
 
@@ -51,10 +52,11 @@ class JogoDaMemoria {
             case 1:
                 const [ opcao1 ] = this.heroisSelecionados
                 this.heroisSelecionados = []  
+                let deveMostrarMensagem = false
                 if(opcao1.nome === item.nome && opcao1.id !== item.id){
+                    deveMostrarMensagem = true
                     this.exbirHerois(item.nome)
-                    this.tela.ExibirMensagem()
-                   // alert('combinação correta', + item.nome)
+                    this.tela.ExibirMensagem(true)                   
                     return;
                 }  
                 this.tela.ExibirMensagem(false)
@@ -68,7 +70,7 @@ class JogoDaMemoria {
             id, nome, img: this.iconePadrao
         }))
         this.tela.atualizarImagens(heroisOcultos)
-        this.heroisOcultos = heroisOcultos
+        this.heroisEscondidos = heroisOcultos
     }
 
     exbirHerois(nomeDoHeroi){
@@ -79,6 +81,15 @@ class JogoDaMemoria {
 
     jogar(){
        this.embaralhar()
+    }
+
+    mostrarHeroisEscondidos(){
+        const heroisEscondidos = this.heroisEscondidos
+        for (const heroi of heroisEscondidos){
+            const {img} = this.heroisIniciais.find(item => item.nome === heroi.nome)
+            heroi.img = img
+        }
+        this.tela.atualizarImagens(heroisEscondidos)
     }
 
    
